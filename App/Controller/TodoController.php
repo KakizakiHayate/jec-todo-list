@@ -1,5 +1,7 @@
 <?php
 
+use Model\TodoModel;
+
 require_once('../Model/TodoModel.php');
 
 $model = new TodoModel();

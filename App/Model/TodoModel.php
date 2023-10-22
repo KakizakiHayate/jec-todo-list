@@ -1,5 +1,8 @@
 <?php
-class TodoModel {
+
+namespace Model;
+class TodoModel
+{
     private $db;
 
     public function __contruct()
