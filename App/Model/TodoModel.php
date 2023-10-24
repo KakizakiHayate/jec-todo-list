@@ -15,11 +15,14 @@ class TodoModel
         $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
         $dotenv->safeLoad();
 
-        $host   = $_ENV['MYSQL_HOST'];
-        $user   = $_ENV['MYSQL_USER'];
-        $pass   = $_ENV['MYSQL_PASS'];
-        $dbName = $_ENV['MYSQL_DB'];
+        $host   = $_ENV['MYSQL_HOST'] ?? null;
+        $user   = $_ENV['MYSQL_USER'] ?? null;
+        $pass   = $_ENV['MYSQL_PASS'] ?? null;
+        $dbName = $_ENV['MYSQL_DB'] ?? null;
 
+        if ( !($host && $user && $pass && $dbName) ) {
+            die('環境変数を読み込めませんでした');
+        }
         $this->db = new mysqli($host, $user, $pass, $dbName);
         if (mysqli_connect_errno()) {
             die('データベース接続エラー: ' . mysqli_connect_errno());
