@@ -1,7 +1,9 @@
 <?php
 
 namespace Model;
+require '../../vendor/autoload.php';
 use mysqli;
+use Dotenv;
 
 class TodoModel
 {
@@ -10,35 +12,41 @@ class TodoModel
     public function __construct()
     {
         // TODO user = admin, pass = adminpass,でやると失敗する
-        $host = 'mysql';
-        $user = 'root';
-        $pass = 'rootpassword';
-        $dbName = 'TodoListDB';
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
+        $dotenv->safeLoad();
+
+        $host   = $_ENV['MYSQL_HOST'] ?? null;
+        $user   = $_ENV['MYSQL_USER'] ?? null;
+        $pass   = $_ENV['MYSQL_PASS'] ?? null;
+        $dbName = $_ENV['MYSQL_DB'] ?? null;
+
+        if ( !($host && $user && $pass && $dbName) ) {
+            die('環境変数を読み込めませんでした');
+        }
         $this->db = new mysqli($host, $user, $pass, $dbName);
-
         if (mysqli_connect_errno()) {
-            echo('データベース接続エラー: ' . mysqli_connect_errno());
-            exit();
+            die('データベース接続エラー: ' . mysqli_connect_errno());
         }
-        echo("Initial character set: %s\n" . $this->db->character_set_name());
         if (!$this->db->set_charset("utf8")) {
-            echo("Error loading character set utf8: %s\n" . $this->db->error);
-            exit();
-        } else {
-            echo("Current character set: %s\n" . $this->db->character_set_name());
+            die("Error loading character set utf8: %s\n" . $this->db->error);
         }
-
     }
 
+    /**
+     * @param $overview
+     * @param $detail
+     * @param $limitDate
+     * @param $assigner
+     * @return void
+     */
     public function createTasks($overview, $detail, $limitDate, $assigner)
     {
         $sql = "INSERT INTO tasks (overview, detail, limit_date, assigner_name, is_deleted, created_at, updated_at)
                 VALUES ('$overview', '$detail', '$limitDate', '$assigner', 0, NOW(), NOW());";
-        echo $sql;
         if ($this->db->query($sql) === true) {
-            echo 'タスクが正常に登録されました。';
+            $this->crudAlert('タスクが正常に登録されました。');
         } else {
-            echo 'タスクの登録中に問題が発生しました。';
+            die ('タスクの登録中に問題が発生しました。');
         }
     }
 
@@ -53,8 +61,20 @@ class TodoModel
 
     }
 
+    /**
+     * @return void
+     */
     public function close()
     {
         $this->db->close();
+    }
+
+    /**
+     * @param $alertText
+     * @return void
+     */
+    private function crudAlert($alertText)
+    {
+        echo "<script type='text/javascript'>alert('{$alertText}');</script>";
     }
 }

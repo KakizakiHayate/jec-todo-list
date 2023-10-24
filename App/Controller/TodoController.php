@@ -12,11 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $limitDate = $_POST['limit-date'];
     $assigner = $_POST['assign'];
 
-    if ($model->createTasks($overview, $detail, $limitDate, $assigner)) {
-        echo 'タスクが正常に登録されました。';
-    } else {
-        echo 'タスクの登録中に問題が発生しました。';
-    }
+    $model->createTasks($overview, $detail, $limitDate, $assigner);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
