@@ -4,6 +4,7 @@ namespace Model;
 require '../../vendor/autoload.php';
 use mysqli;
 use Dotenv;
+use mysqli_result;
 
 class TodoModel
 {
@@ -50,10 +51,10 @@ class TodoModel
         }
     }
 
-    public function fetchTasks()
+    public function fetchTasks(): mysqli_result
     {
-        // select文でテーブル全部の中身を持ってくる
-        return $this->db->query('SELECT * FROM tasks');
+        $query = 'SELECT * FROM tasks';
+        return $this->db->query($query);
     }
 
     public function updateTasks()

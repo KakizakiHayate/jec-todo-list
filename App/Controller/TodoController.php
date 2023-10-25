@@ -1,6 +1,8 @@
 <?php
 
+namespace Controller;
 use Model\TodoModel;
+use mysqli_result;
 
 require_once('../Model/TodoModel.php');
 
@@ -13,10 +15,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $assigner = $_POST['assign'];
 
     $model->createTasks($overview, $detail, $limitDate, $assigner);
+    include '../View/TodoView.php';
 }
+ class TodoController {
+    private $todoModel;
+    public function __construct()
+    {
+        $this->todoModel = new TodoModel();
+    }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
+     /**
+      * @return mysqli_result
+      */
+    public function fetchTasks(): mysqli_result
+    {
+        return $this->todoModel->fetchTasks();
+    }
 }
 
 $model->close();
