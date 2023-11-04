@@ -1,0 +1,39 @@
+@charset "utf-8";
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* タスク一覧 */
+#task-list-wrapper .task-content {
+    width: 80%;
+    height: auto;
+    margin: 10px auto;
+    border: 1px solid #2449ff;
+    box-shadow: 5px 2px 5px rgba(36, 73, 255, 0.74);
+}
+
+#task-list-wrapper
+.task-content
+.task-content-text-section {
+    margin: 10px 0 10px 10px;
+}
+
+#task-list-wrapper
+.task-content {
+    position: relative;
+}
+
+#task-list-wrapper
+.task-content
+.task-content-detail-img
+svg {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 38%;
+    right: 10px;
+}
+
+/* タスク一覧ここまで */
