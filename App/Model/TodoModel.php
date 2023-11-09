@@ -57,9 +57,28 @@ class TodoModel
         return $this->db->query($query);
     }
 
-    public function updateTasks()
+    public function fetchTask($id): mysqli_result
     {
+        $query = "SELECT * FROM tasks WHERE id='$id'";
+        return $this->db->query($query);
+    }
 
+    public function updateTasks($number, $overview, $detail, $limitDate, $assigner)
+    {
+        $query = "UPDATE tasks
+                  SET overview = '$overview',
+                  detail = '$detail',
+                  limit_date = $limitDate,
+                  assigner_name = '$assigner',
+                  is_deleted = 0,
+                  created_at = NOW(),
+                  updated_at = NOW()
+                  WHERE id = '$number'";
+        if ($this->db->query($query)) {
+            $this->crudAlert('タスクが正常に更新されました。');
+        } else {
+            die ('タスクの更新中に問題が発生しました。');
+        }
     }
 
     /**
