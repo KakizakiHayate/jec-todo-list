@@ -12,7 +12,7 @@ class TodoModel
 
     public function __construct()
     {
-        // TODO user = admin, pass = adminpass,でやると失敗する
+        // ToDo: user = admin, pass = adminpass,でやると失敗する, mysql -u root -pでコンテナに入ってるから？
         $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
         $dotenv->safeLoad();
 
@@ -66,14 +66,14 @@ class TodoModel
     public function updateTasks($number, $overview, $detail, $limitDate, $assigner)
     {
         $query = "UPDATE tasks
-                  SET overview = '$overview',
-                  detail = '$detail',
-                  limit_date = $limitDate,
-                  assigner_name = '$assigner',
-                  is_deleted = 0,
-                  created_at = NOW(),
-                  updated_at = NOW()
-                  WHERE id = '$number'";
+                  SET overview='$overview',
+                  detail='$detail',
+                  limit_date='$limitDate',
+                  assigner_name='$assigner',
+                  is_deleted=0,
+                  created_at=NOW(),
+                  updated_at=NOW()
+                  WHERE id='$number'";
         if ($this->db->query($query)) {
             $this->crudAlert('タスクが正常に更新されました。');
         } else {

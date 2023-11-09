@@ -46,7 +46,7 @@
                     if ( isset($_GET['id']) ) {
                         echo "<div class='id-wrapper'>
                             <label for='id'>id</label>
-                            <input type='text' name='text' id='text' value='$id' readonly>
+                            <input type='text' name='id' id='id' value='$id' readonly>
                         </div>";
                     }
                     echo "
