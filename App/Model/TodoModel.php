@@ -25,10 +25,10 @@ class TodoModel
             die('環境変数を読み込めませんでした');
         }
         $this->db = new mysqli($host, $user, $pass, $dbName);
-        if (mysqli_connect_errno()) {
+        if ( mysqli_connect_errno() ) {
             die('データベース接続エラー: ' . mysqli_connect_errno());
         }
-        if (!$this->db->set_charset("utf8")) {
+        if ( !$this->db->set_charset("utf8") ) {
             die("Error loading character set utf8: %s\n" . $this->db->error);
         }
     }
@@ -44,25 +44,42 @@ class TodoModel
     {
         $sql = "INSERT INTO tasks (overview, detail, limit_date, assigner_name, is_deleted, created_at, updated_at)
                 VALUES ('$overview', '$detail', '$limitDate', '$assigner', 0, NOW(), NOW());";
-        if ($this->db->query($sql) === true) {
+        if ( $this->db->query($sql)) {
             $this->crudAlert('タスクが正常に登録されました。');
         } else {
             die ('タスクの登録中に問題が発生しました。');
         }
     }
 
+    /**
+     * @return mysqli_result
+     */
     public function fetchTasks(): mysqli_result
     {
-        $query = 'SELECT * FROM tasks';
+        $query = 'SELECT * FROM tasks WHERE is_deleted != 1';
         return $this->db->query($query);
     }
 
+    /**
+     * @param $id
+     * @return mysqli_result
+     */
     public function fetchTask($id): mysqli_result
     {
         $query = "SELECT * FROM tasks WHERE id='$id'";
         return $this->db->query($query);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param String $number
+     * @param String $overview
+     * @param String $detail
+     * @param String $limitDate
+     * @param String $assigner
+     * @return void
+     */
     public function updateTasks($number, $overview, $detail, $limitDate, $assigner)
     {
         $query = "UPDATE tasks
@@ -71,14 +88,28 @@ class TodoModel
                   limit_date='$limitDate',
                   assigner_name='$assigner',
                   is_deleted=0,
-                  created_at=NOW(),
                   updated_at=NOW()
                   WHERE id='$number'";
-        if ($this->db->query($query)) {
-            $this->crudAlert('タスクが正常に更新されました。');
-        } else {
-            die ('タスクの更新中に問題が発生しました。');
-        }
+        $this->db->query($query)
+        ? $this->crudAlert('タスクが正常に更新されました。')
+        : die ('タスクの更新中に問題が発生しました。');
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param String $id
+     * @return void
+     */
+    public function deleteTasks($id)
+    {
+        $query = "UPDATE tasks
+                  SET is_deleted = '1'
+                  WHERE id = '$id'";
+
+        $this->db->query($query)
+        ? $this->crudAlert('タスクが正常に削除されました。')
+        : die ('タスクの削除中に問題が発生しました。');
     }
 
     /**

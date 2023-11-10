@@ -9,17 +9,23 @@ require '../../vendor/autoload.php';
 
 $model = new TodoModel();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
     header('Location: ../View/TodoView.php');
-    $id = $_POST['id'];
-    $overview = $_POST['overview'];
-    $detail = $_POST['detail'];
-    $limitDate = $_POST['limit-date'];
-    $assigner = $_POST['assign'];
-    isset( $_POST['id'] )
-    // 以下はupdateにする
-        ? $model->updateTasks($id, $overview, $detail, $limitDate, $assigner)
-        : $model->createTasks($overview, $detail, $limitDate, $assigner);
+    if ( isset($_POST['id']) ) $id = $_POST['id'];
+    if ( isset($_POST['overview']) ) $overview = $_POST['overview'];
+    if ( isset($_POST['detail']) ) $detail = $_POST['detail'];
+    if ( isset($_POST['limit-date']) ) $limitDate = $_POST['limit-date'];
+    if ( isset($_POST['assign']) ) $assigner = $_POST['assign'];
+
+    if ( !isset($id) ) {
+        $model->createTasks($overview, $detail, $limitDate, $assigner);
+    }
+    if ( isset($id) && isset($_POST['update-button']) ) {
+        $model->updateTasks($id, $overview, $detail, $limitDate, $assigner);
+    }
+    if ( isset($id) && isset($_POST['delete-button']) ) {
+        $model->deleteTasks($id);
+    }
 }
  class TodoController {
     private $todoModel;

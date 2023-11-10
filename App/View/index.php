@@ -21,7 +21,7 @@
 
         <main id="main">
             <section class="user-input">
-                <form action="../Controller/TodoController.php" method="post">
+                <form action="../Controller/TodoController.php" method="POST">
                     <?php
                     require_once('../Controller/TodoController.php');
                     $overview = "";
@@ -67,7 +67,7 @@
                         <input type='text' name='assign' id='assign' value='{$assign}'>
                     </div>
                     <div class='register-wrapper'>
-                        <input class='register-button' type='submit' value='{$taskText}'>
+                        <input class='register-button' name='update-button' type='submit' value='{$taskText}'>
                     </div>";
                     ?>
                 </form>

@@ -11,7 +11,7 @@
         use Controller\TodoController;
         require_once('../Controller/TodoController.php');
         try {
-            $id = $_GET['id'];
+            $id = isset($_GET['id']) ? $_GET['id'] : 0;
             $todoController = new TodoController();
             $stmt = $todoController->fetchTask($id);
             foreach ($stmt as $row) {
@@ -24,19 +24,23 @@
             <p>{$row['limit_date']}</p>
             <h3>担当者</h3>
             <p>{$row['assigner_name']}</p>
-        </div>
-                <div class='update-button'>
-        <a href='index.php?id={$row['id']}'>
-            更新する
-        </a>
-    </div>";
+            </div>";
             }
         } catch ( Exception $e ) {
             echo '詳細にエラーが発生しました' . $e;
         }
-
         ?>
+        <div class='update-button'>
+            <button onclick="location.href='index.php?id=<?php echo $row['id'] ?>'">
+                更新する
+            </button>
+        </div>
+        <div class='delete-button'>
+            <form action="../Controller/TodoController.php" method="POST">
+                <input type="hidden" name="id" value="<?php echo $id ?>">
+                <input type="submit" name="delete-button" value="削除する">
+            </form>
+        </div>
     </div>
-
 </body>
 </html>
