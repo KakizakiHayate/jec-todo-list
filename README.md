@@ -24,7 +24,7 @@ https://github.com/KakizakiHayate/jec-todo-list/assets/109132975/563582ad-9da3-4
 - MySQL
 ### 構成
 - アーキテクチャ: MVC
-- ブランチモデル: Github flow
+- ブランチモデル: Git-flow
 
 ## 開発環境
 - Visual Studio Code(1.80.1)
