@@ -2,7 +2,7 @@
 TodoList
 
 ## URL
-http://22cm0110.main.jp/JecTodoList/App/View/TodoView.php
+https://main-22cm0110.ssl-lolipop.jp/JecTodoList/App/View/TodoView.php
 
 ## アプリの概要
 PHPでCRUD操作を学ぶためのTodoListを作成
