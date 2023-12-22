@@ -38,7 +38,7 @@
         <div class='delete-button'>
             <form action="../Controller/TodoController.php" method="POST">
                 <input type="hidden" name="id" value="<?php echo $id ?>">
-                <input type="submit" name="delete-button" value="削除する">
+                <input type="submit" name="delete-button" value="削除する" onclick="return confirm('削除してよろしいですか？');">
             </form>
         </div>
     </div>

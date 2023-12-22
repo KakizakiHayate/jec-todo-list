@@ -44,9 +44,8 @@ class TodoModel
     {
         $sql = "INSERT INTO tasks (overview, detail, limit_date, assigner_name, is_deleted, created_at, updated_at)
                 VALUES ('$overview', '$detail', '$limitDate', '$assigner', 0, NOW(), NOW());";
-        if ( $this->db->query($sql)) {
-            $this->crudAlert('タスクが正常に登録されました。');
-        } else {
+        
+        if (!$this->db->query($sql)) {
             die ('タスクの登録中に問題が発生しました。');
         }
     }
@@ -90,9 +89,9 @@ class TodoModel
                   is_deleted=0,
                   updated_at=NOW()
                   WHERE id='$number'";
-        $this->db->query($query)
-        ? $this->crudAlert('タスクが正常に更新されました。')
-        : die ('タスクの更新中に問題が発生しました。');
+        if (!$this->db->query($query)) {
+            die('タスクの更新中に問題が発生しました。');
+        }
     }
 
     /**
@@ -107,9 +106,9 @@ class TodoModel
                   SET is_deleted = '1'
                   WHERE id = '$id'";
 
-        $this->db->query($query)
-        ? $this->crudAlert('タスクが正常に削除されました。')
-        : die ('タスクの削除中に問題が発生しました。');
+        if (!$this->db->query($query)) {
+            die ('タスクの削除中に問題が発生しました。');
+        }
     }
 
     /**
@@ -118,14 +117,5 @@ class TodoModel
     public function close()
     {
         $this->db->close();
-    }
-
-    /**
-     * @param $alertText
-     * @return void
-     */
-    private function crudAlert($alertText)
-    {
-        echo "<script type='text/javascript'>alert('{$alertText}');</script>";
     }
 }

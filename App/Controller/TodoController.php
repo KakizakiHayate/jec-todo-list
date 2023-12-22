@@ -10,7 +10,7 @@ require '../../vendor/autoload.php';
 $model = new TodoModel();
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
-    header('Location: ../View/TodoView.php');
+    session_start();
     if ( isset($_POST['id']) ) $id = $_POST['id'];
     if ( isset($_POST['overview']) ) $overview = $_POST['overview'];
     if ( isset($_POST['detail']) ) $detail = $_POST['detail'];
@@ -19,14 +19,25 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
     if ( !isset($id) ) {
         $model->createTasks($overview, $detail, $limitDate, $assigner);
+        $_SESSION['alert_message'] = 'タスクが正常に追加されました。';
     }
     if ( isset($id) && isset($_POST['update-button']) ) {
         $model->updateTasks($id, $overview, $detail, $limitDate, $assigner);
+        $_SESSION['alert_message'] = 'タスクが正常に更新されました。';
     }
     if ( isset($id) && isset($_POST['delete-button']) ) {
         $model->deleteTasks($id);
+        $_SESSION['alert_message'] = 'タスクが正常に削除されました。';
     }
+
+    if (isset($_SESSION['alert_message'])) {
+        echo "<script type='text/javascript'>alert('" . $_SESSION['alert_message'] . "');</script>";
+        unset($_SESSION['alert_message']);
+    }
+
+    echo '<script>location.href = " ../View/TodoView.php" ;</script>';
 }
+
  class TodoController {
     private $todoModel;
     public function __construct()
